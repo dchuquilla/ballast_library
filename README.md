@@ -28,7 +28,7 @@ Running the Application with Docker
 ### 1. Build and Start the Containers
 
 ```sh
-docker-compose up --build
+docker-compose up --build -d
 ```
 
 ### 2. Access the Application
