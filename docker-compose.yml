@@ -12,6 +12,8 @@ services:
       - db
     networks:
       - ballast_network
+    command: >
+      /bin/sh -c "bundle exec rails db:create db:migrate db:seed && bundle exec rails server -b 0.0.0.0"
 
   frontend:
     build:
