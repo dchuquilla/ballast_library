@@ -41,6 +41,7 @@ group :development, :test do
 
   gem "rspec-rails" # Testing framework for Rails
   gem "factory_bot_rails" # Fixtures replacement with a straightforward definition syntax
+  gem "rswag" # API documentation and testing
 end
 
 group :development do
