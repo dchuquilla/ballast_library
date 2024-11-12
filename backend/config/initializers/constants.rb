@@ -1,1 +1,1 @@
-APP_ROLES = %w[librarian member].freeze
+APP_ROLES = { librarian: "libratian", member: "member" }.freeze
