@@ -1,0 +1,21 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: db
+  username: postgres
+  password: password
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: ballast_library_development
+
+test:
+  <<: *default
+  database: ballast_library_test
+
+production:
+  <<: *default
+  database: ballast_library_production
+  username: backend
+  password: <%= ENV["BACKEND_DATABASE_PASSWORD"] %>
