@@ -33,8 +33,8 @@ docker-compose up --build
 
 ### 2. Access the Application
 
-- Backend: The Rails server will be running at `http://localhost:3000`
-- Frontend: The React development server will be running at `http://localhost:3001`
+- Backend: The Rails server will be running at `http://127.0.0.1:3000`
+- Frontend: The React development server will be running at `http://127.0.0.1:3001`
 
 Stopping the Containers
 
