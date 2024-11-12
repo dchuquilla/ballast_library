@@ -6,6 +6,9 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# Add this line to require Devise ORM
+require "devise/orm/active_record"
+
 module Backend
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
