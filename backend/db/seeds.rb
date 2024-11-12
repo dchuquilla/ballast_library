@@ -7,14 +7,22 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 # Create users
-User.find_or_create_by(email: "member@example.com") do |user|
+member = User.find_or_create_by(email: "member@example.com") do |user|
+  user.name = "Member"
   user.password = "password"
   user.password_confirmation = "password"
   user.role = APP_ROLES[:member]
 end
+member.save!
 
-User.find_or_create_by(email: "librarian@example.com") do |user|
+puts "Member created with email #{User.last.email}"
+
+librarian = User.find_or_create_by(email: "librarian@example.com") do |user|
+  user.name = "Librarian"
   user.password = "password"
   user.password_confirmation = "password"
   user.role = APP_ROLES[:librarian]
 end
+librarian.save!
+
+puts "Librarian created with email #{User.last.email}"
