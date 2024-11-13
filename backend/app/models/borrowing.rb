@@ -2,13 +2,13 @@ class Borrowing < ApplicationRecord
   belongs_to :user
   belongs_to :book_copy
 
-  validate :unique_borrowing_per_user, on: :create
+  validate :unique_borrowing_per_book_copy, on: :create
 
   before_create :set_borrowed_at, :set_due_date
 
-  def unique_borrowing_per_user
-    if Borrowing.where(user: user, returned_at: nil).exists?
-      errors.add(:user, "already has an active borrowing")
+  def unique_borrowing_per_book_copy
+    if Borrowing.where(book_copy: book_copy, returned_at: nil).exists?
+      errors.add(:book_copy, "is already borrowed")
     end
   end
 

@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe BorrowBookService do
   let(:user) { create(:user) }
+  let(:user_other) { create(:user) }
   let(:book_copy) { create(:book_copy) }
   let(:params) { { book_copy_id: book_copy.id } }
   let(:service) { described_class.new(user, params) }
@@ -30,6 +31,18 @@ RSpec.describe BorrowBookService do
         expect(result[:success]).to be false
         expect(result[:errors]).to include("Error message")
         expect(book_copy.status).to eq(BOOK_STATUSES[:available])
+      end
+    end
+
+    context "when borrowing the same book copy again" do
+      before do
+        create(:borrowing, user: user_other, book_copy: book_copy)
+      end
+
+      it "returns an error message" do
+        result = service.call
+        expect(result[:success]).to be false
+        expect(result[:errors]).to include("Book copy is already borrowed")
       end
     end
   end
