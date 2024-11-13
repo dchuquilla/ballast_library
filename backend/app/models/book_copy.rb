@@ -1,5 +1,6 @@
 class BookCopy < ApplicationRecord
   belongs_to :book
+  has_one :borrowing
 
   validates :status, presence: true, inclusion: { in: BOOK_STATUSES.values }
 
