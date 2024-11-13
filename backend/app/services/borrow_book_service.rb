@@ -11,10 +11,12 @@ class BorrowBookService
 
   def call
     @borrowing = Borrowing.new(user: user, book_copy_id: params[:book_copy_id])
+
     if @borrowing.save
       book_copy = BookCopy.find(params[:book_copy_id])
       book_copy.update(status: BOOK_STATUSES[:borrowed])
-      { success: true, message: "Book borrowed successfully" }
+
+      { success: true, message: "Book borrowed successfully", borrowing: @borrowing }
     else
       book_copy = BookCopy.find(params[:book_copy_id])
       book_copy.update(status: BOOK_STATUSES[:available])
