@@ -14,6 +14,15 @@ ActiveRecord::Schema[7.0].define(version: 202411121511936) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "book_copies", force: :cascade do |t|
+    t.bigint "book_id", null: false
+    t.string "copy_code", null: false
+    t.string "status", default: "available", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_book_copies_on_book_id"
+  end
+
   create_table "books", force: :cascade do |t|
     t.string "title", null: false
     t.string "author", null: false
@@ -48,4 +57,5 @@ ActiveRecord::Schema[7.0].define(version: 202411121511936) do
     t.index ["role"], name: "index_users_on_role"
   end
 
+  add_foreign_key "book_copies", "books"
 end
