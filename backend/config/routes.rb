@@ -7,11 +7,19 @@ Rails.application.routes.draw do
                      }
   namespace :v1 do
     namespace :librarian do
-      resources :books
+      resources :books do
+        collection do
+          get :search
+        end
+      end
     end
 
     namespace :member do
-      resources :books, only: [:index, :show]
+      resources :books, only: [:index, :show] do
+        collection do
+          get :search
+        end
+      end
     end
   end
 end

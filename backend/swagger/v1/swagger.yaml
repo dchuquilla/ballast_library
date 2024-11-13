@@ -230,6 +230,74 @@
         }
       }
     },
+    "/v1/member/books/search": {
+      "get": {
+        "summary": "Member Search books",
+        "tags": [
+          "Books"
+        ],
+        "security": [
+          {
+            "Bearer": [
+
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "books listed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "author": {
+                        "type": "string"
+                      },
+                      "genre": {
+                        "type": "string"
+                      },
+                      "isbn": {
+                        "type": "string"
+                      },
+                      "total_copies": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "title",
+                      "author",
+                      "genre",
+                      "isbn",
+                      "total_copies"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/librarian/books": {
       "get": {
         "summary": "Librarian list all books",
@@ -605,6 +673,74 @@
                     "error": {
                       "type": "string"
                     }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/librarian/books/search": {
+      "get": {
+        "summary": "Librarian Search books",
+        "tags": [
+          "Librarian Books"
+        ],
+        "security": [
+          {
+            "Bearer": [
+
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "books listed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "author": {
+                        "type": "string"
+                      },
+                      "genre": {
+                        "type": "string"
+                      },
+                      "isbn": {
+                        "type": "string"
+                      },
+                      "total_copies": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "title",
+                      "author",
+                      "genre",
+                      "isbn",
+                      "total_copies"
+                    ]
                   }
                 }
               }

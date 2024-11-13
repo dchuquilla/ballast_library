@@ -15,6 +15,11 @@ class V1::Librarian::BooksController < ApplicationController
     render json: @books, status: :ok
   end
 
+  def search
+    @books = BookSearchService.new(params[:query]).call
+    render json: @books, status: :ok
+  end
+
   def show
     render json: @book, status: :ok
   end

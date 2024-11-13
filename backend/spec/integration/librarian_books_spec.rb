@@ -331,4 +331,45 @@ RSpec.describe "Librarian Books API", type: :request do
       end
     end
   end
+
+  path "/v1/librarian/books/search" do
+    get "Librarian Search books" do
+      tags "Librarian Books"
+      consumes "application/json"
+      produces "application/json"
+      security [Bearer: []]
+
+      parameter name: :query, in: :query, type: :string, required: true
+
+      response "200", "books listed" do
+        schema type: :array,
+               items: {
+                 type: :object,
+                 properties: {
+                   id: { type: :integer },
+                   title: { type: :string },
+                   author: { type: :string },
+                   genre: { type: :string },
+                   isbn: { type: :string },
+                   total_copies: { type: :integer },
+                 },
+                 required: %w[id title author genre isbn total_copies],
+               }
+
+        let(:query) { Book.first.isbn }
+
+        before do |example|
+          submit_request(example.metadata)
+        end
+
+        it "returns found books" do
+          body = JSON.parse(response.body)
+
+          expect(response).to have_http_status(:ok)
+          expect(body.size).to eq(1)
+          expect(Book.first.isbn).to eq(body.first["isbn"])
+        end
+      end
+    end
+  end
 end
