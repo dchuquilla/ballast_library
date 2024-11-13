@@ -1491,6 +1491,375 @@
         }
       }
     },
+    "/v1/librarian/borrowings": {
+      "get": {
+        "summary": "Librarian List all borrowings",
+        "tags": [
+          "Librarian Borrowings"
+        ],
+        "security": [
+          {
+            "Bearer": [
+
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "borrowings listed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "book_copy_id": {
+                        "type": "integer"
+                      },
+                      "user_id": {
+                        "type": "integer"
+                      },
+                      "borrowed_at": {
+                        "type": "string"
+                      },
+                      "due_date": {
+                        "type": "string"
+                      },
+                      "returned_at": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "book_copy_id",
+                      "user_id",
+                      "borrowed_at",
+                      "due_date",
+                      "returned_at"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/librarian/borrowings/{id}": {
+      "get": {
+        "summary": "Librarian see one borrowing",
+        "tags": [
+          "Librarian Borrowings"
+        ],
+        "security": [
+          {
+            "Bearer": [
+
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "borrowing shown",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "book_copy_id": {
+                      "type": "integer"
+                    },
+                    "user_id": {
+                      "type": "integer"
+                    },
+                    "borrowed_at": {
+                      "type": "string"
+                    },
+                    "due_date": {
+                      "type": "string"
+                    },
+                    "returned_at": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "book_copy_id",
+                    "user_id",
+                    "borrowed_at",
+                    "due_date",
+                    "returned_at"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "borrowing not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Librarian update borrowing",
+        "tags": [
+          "Librarian Borrowings"
+        ],
+        "security": [
+          {
+            "Bearer": [
+
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "borrowing updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "book_copy_id": {
+                      "type": "integer"
+                    },
+                    "user_id": {
+                      "type": "integer"
+                    },
+                    "borrowed_at": {
+                      "type": "string"
+                    },
+                    "due_date": {
+                      "type": "string"
+                    },
+                    "returned_at": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "book_copy_id",
+                    "user_id",
+                    "borrowed_at",
+                    "due_date",
+                    "returned_at"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "borrowing not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "borrowing": {
+                    "type": "object",
+                    "properties": {
+                      "book_copy_id": {
+                        "type": "integer"
+                      },
+                      "user_id": {
+                        "type": "integer"
+                      },
+                      "borrowed_at": {
+                        "type": "string"
+                      },
+                      "due_date": {
+                        "type": "string"
+                      },
+                      "returned_at": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "book_copy_id",
+                      "user_id",
+                      "borrowed_at",
+                      "due_date",
+                      "returned_at"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Librarian delete borrowing",
+        "tags": [
+          "Librarian Borrowings"
+        ],
+        "security": [
+          {
+            "Bearer": [
+
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "borrowing deleted"
+          },
+          "404": {
+            "description": "borrowing not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/librarian/borrowings/{id}/return": {
+      "patch": {
+        "summary": "Librarian return borrowing",
+        "tags": [
+          "Librarian Borrowings"
+        ],
+        "security": [
+          {
+            "Bearer": [
+
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "borrowing returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "book_copy_id": {
+                      "type": "integer"
+                    },
+                    "user_id": {
+                      "type": "integer"
+                    },
+                    "borrowed_at": {
+                      "type": "string"
+                    },
+                    "due_date": {
+                      "type": "string"
+                    },
+                    "returned_at": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "book_copy_id",
+                    "user_id",
+                    "borrowed_at",
+                    "due_date",
+                    "returned_at"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "borrowing not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users/sign_in": {
       "post": {
         "summary": "Sign in a user",
