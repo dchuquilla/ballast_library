@@ -8,12 +8,12 @@ paths:
     post:
       summary: Sign in a user
       tags:
-      - Authentication
+        - Authentication
       parameters: []
       responses:
-        '200':
+        "200":
           description: user signed in
-        '401':
+        "401":
           description: invalid credentials
       requestBody:
         content:
@@ -26,18 +26,18 @@ paths:
                 password:
                   type: string
               required:
-              - email
-              - password
+                - email
+                - password
   "/users/sign_out":
     delete:
       summary: Sign out a user
       tags:
-      - Authentication
+        - Authentication
       responses:
-        '200':
+        "200":
           description: user signed out
 servers:
-- url: https://{defaultHost}
-  variables:
-    defaultHost:
-      default: www.example.com
+  - url: http://{defaultHost}
+    variables:
+      defaultHost:
+        default: 127.0.0.1:3000
