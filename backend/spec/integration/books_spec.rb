@@ -5,6 +5,8 @@ require "swagger_helper"
 require "devise/jwt/test_helpers"
 
 RSpec.describe "Books API", type: :request do
+  include Helpers::Authentication
+
   let(:user) { create(:user) }
   let(:authorization) { get_token_bearer(user) }
 
@@ -43,6 +45,44 @@ RSpec.describe "Books API", type: :request do
           expect(response).to have_http_status(:ok)
           expect(target_book.title).to eq(body.find { |book| book["id"] == target_book.id }["title"])
           expect(body.size).to eq(Book.count)
+        end
+      end
+    end
+  end
+
+  path "/books/{id}" do
+    get "Show book" do
+      tags "Books"
+      consumes "application/json"
+      produces "application/json"
+      security [Bearer: []]
+
+      parameter name: :id, in: :path, type: :integer, required: true
+
+      let(:book) { create(:book) }
+
+      response "200", "book found" do
+        schema type: :object,
+               properties: {
+                 id: { type: :integer },
+                 title: { type: :string },
+                 author: { type: :string },
+                 genre: { type: :string },
+                 isbn: { type: :string },
+                 total_copies: { type: :integer },
+               }
+
+        let(:id) { book.id }
+
+        before do |example|
+          submit_request(example.metadata)
+        end
+
+        it "returns the book" do
+          body = JSON.parse(response.body)
+
+          expect(response).to have_http_status(:ok)
+          expect(book.title).to eq(body["title"])
         end
       end
     end
