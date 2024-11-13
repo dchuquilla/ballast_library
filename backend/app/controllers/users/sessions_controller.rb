@@ -6,6 +6,8 @@ class Users::SessionsController < Devise::SessionsController
       if user.persisted?
         token = generate_token_for(user) # Ensure this method generates a valid token
         response.headers["Authorization"] = "Bearer #{token}"
+      else
+        Rails.logger.info "User not persisted: #{user.errors.full_messages.join(", ")}"
       end
     end
   end
@@ -13,7 +15,11 @@ class Users::SessionsController < Devise::SessionsController
   private
 
   def respond_with(resource, _opts = {})
-    render json: { message: "Logged in successfully." }, status: :ok
+    if resource.persisted?
+      render json: { message: "Logged in successfully." }, status: :ok
+    else
+      render json: { message: "Invalid login credentials." }, status: :unauthorized
+    end
   end
 
   def respond_to_on_destroy
