@@ -30,9 +30,16 @@ class V1::Librarian::BooksController < ApplicationController
   end
 
   def update
+    if @book.update(book_params)
+      render json: @book, status: :ok
+    else
+      render json: { errors: @book.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy
+    @book.destroy
+    head :no_content
   end
 
   private

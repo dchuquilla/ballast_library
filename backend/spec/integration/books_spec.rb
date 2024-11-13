@@ -10,6 +10,7 @@ RSpec.describe "Books API", type: :request do
 
   let(:user) { create(:user) }
   let(:authorization) { get_token_bearer(user) }
+  let(:all_books) { create_list(:book, 50) }
 
   path "/v1/member/books" do
     get "Member List all books" do
@@ -17,8 +18,6 @@ RSpec.describe "Books API", type: :request do
       consumes "application/json"
       produces "application/json"
       security [Bearer: []]
-
-      let(:all_books) { create_list(:book, 50) }
 
       response "200", "books listed" do
         schema type: :array,
@@ -56,50 +55,17 @@ RSpec.describe "Books API", type: :request do
       produces "application/json"
       security [Bearer: []]
 
-      parameter name: :params, in: :body, schema: {
-        type: :object,
-        properties: {
-          book: {
-            type: :object,
-            properties: {
-              title: { type: :string },
-              author: { type: :string },
-              genre: { type: :string },
-              isbn: { type: :string },
-            },
-            required: %w[title author genre isbn],
-          },
-        },
-        required: %w[book],
-      }
-
       response "404", "Cant't book created" do
         schema type: :object,
                properties: {
-                 id: { type: :integer },
-                 title: { type: :string },
-                 author: { type: :string },
-                 genre: { type: :string },
-                 isbn: { type: :string },
-                 total_copies: { type: :integer },
+                 error: { type: :string },
                }
-
-        let(:params) do
-          {
-            book: {
-              title: Faker::Book.title,
-              author: Faker::Book.author,
-              genre: Faker::Book.genre,
-              isbn: Faker::Code.isbn,
-            },
-          }
-        end
 
         before do |example|
           submit_request(example.metadata)
         end
 
-        it "returns the created book" do
+        it "returns not found route" do
           body = JSON.parse(response.body)
 
           expect(response).to have_http_status(:not_found)
@@ -142,6 +108,64 @@ RSpec.describe "Books API", type: :request do
 
           expect(response).to have_http_status(:ok)
           expect(book.title).to eq(body["title"])
+        end
+      end
+    end
+
+    patch "Member can't Update book" do
+      tags "Books"
+      consumes "application/json"
+      produces "application/json"
+      security [Bearer: []]
+
+      parameter name: :id, in: :path, type: :integer, required: true
+
+      response("404", "Can't update a book") do
+        schema type: :object,
+               properties: {
+                 error: { type: :string },
+               }
+
+        let(:id) { all_books.first.id }
+
+        before do |example|
+          submit_request(example.metadata)
+        end
+
+        it "returns not found route" do
+          body = JSON.parse(response.body)
+
+          expect(response).to have_http_status(:not_found)
+          expect(body["error"]).to eq("Not Found")
+        end
+      end
+    end
+
+    delete "Member can't Delete book" do
+      tags "Books"
+      consumes "application/json"
+      produces "application/json"
+      security [Bearer: []]
+
+      parameter name: :id, in: :path, type: :integer, required: true
+
+      response("404", "Can't delete a book") do
+        schema type: :object,
+               properties: {
+                 error: { type: :string },
+               }
+
+        let(:id) { all_books.first.id }
+
+        before do |example|
+          submit_request(example.metadata)
+        end
+
+        it "returns not found route" do
+          body = JSON.parse(response.body)
+
+          expect(response).to have_http_status(:not_found)
+          expect(body["error"]).to eq("Not Found")
         end
       end
     end

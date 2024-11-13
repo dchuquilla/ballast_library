@@ -10,6 +10,8 @@ RSpec.describe "Librarian Books API", type: :request do
 
   let(:user) { create(:user, :librarian) }
   let(:authorization) { get_token_bearer(user) }
+  let(:all_books) { create_list(:book, 50) }
+  let(:changed_isbn) { "isbn-#{SecureRandom.alphanumeric(6)}" }
 
   path "/v1/librarian/books" do
     get "Librarian list all books" do
@@ -17,8 +19,6 @@ RSpec.describe "Librarian Books API", type: :request do
       consumes "application/json"
       produces "application/json"
       security [Bearer: []]
-
-      let(:all_books) { create_list(:book, 50) }
 
       response "200", "books listed" do
         schema type: :array,
@@ -120,7 +120,7 @@ RSpec.describe "Librarian Books API", type: :request do
 
       let(:book) { create(:book) }
 
-      response "200", "book found" do
+      response(200, "book found") do
         schema type: :object,
                properties: {
                  id: { type: :integer },
@@ -142,6 +142,191 @@ RSpec.describe "Librarian Books API", type: :request do
 
           expect(response).to have_http_status(:ok)
           expect(book.title).to eq(body["title"])
+        end
+      end
+
+      response(404, "book not found") do
+        schema type: :object,
+               properties: {
+                 error: { type: :string },
+               }
+
+        let(:id) { 0 }
+
+        before do |example|
+          submit_request(example.metadata)
+        end
+
+        it "returns not found route" do
+          body = JSON.parse(response.body)
+
+          expect(response).to have_http_status(:not_found)
+          expect(body["errors"]).to include("not found")
+        end
+      end
+    end
+
+    patch "Librarian can Update book" do
+      tags "Librarian Books"
+      consumes "application/json"
+      produces "application/json"
+      security [Bearer: []]
+
+      parameter name: :id, in: :path, type: :integer, required: true
+      parameter name: :params, in: :body, schema: {
+        type: :object,
+        properties: {
+          book: {
+            type: :object,
+            properties: {
+              title: { type: :string },
+              author: { type: :string },
+              genre: { type: :string },
+              isbn: { type: :string },
+            },
+            required: %w[title author genre isbn],
+          },
+        },
+        required: %w[book],
+      }
+
+      response(200, "book updated") do
+        schema type: :object,
+               properties: {
+                 id: { type: :integer },
+                 title: { type: :string },
+                 author: { type: :string },
+                 genre: { type: :string },
+                 isbn: { type: :string },
+                 total_copies: { type: :integer },
+               }
+        let(:id) { all_books.first.id }
+
+        let(:params) do
+          {
+            book: {
+              title: "Changed Title",
+              author: Faker::Book.author,
+              genre: Faker::Book.genre,
+              isbn: changed_isbn,
+            },
+          }
+        end
+
+        before do |example|
+          submit_request(example.metadata)
+        end
+
+        it "returns the updated book" do
+          body = JSON.parse(response.body)
+
+          expect(response).to have_http_status(:ok)
+          expect("Changed Title").to eq(body["title"])
+          expect(changed_isbn).to eq(body["isbn"])
+        end
+      end
+
+      response(422, "book not updated") do
+        schema type: :object,
+               properties: {
+                 errors: { type: :array, items: { type: :string } },
+               }
+
+        let(:id) { all_books.first.id }
+
+        let(:params) do
+          {
+            book: {
+              title: "Changed Title",
+              author: Faker::Book.author,
+              genre: Faker::Book.genre,
+              isbn: Book.first.isbn,
+            },
+          }
+        end
+
+        before do |example|
+          submit_request(example.metadata)
+        end
+
+        it "returns the updated book" do
+          body = JSON.parse(response.body)
+
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(body["errors"]).to include("Isbn has already been taken")
+        end
+      end
+
+      response(404, "book not found") do
+        schema type: :object,
+               properties: {
+                 error: { type: :string },
+               }
+
+        let(:id) { 0 }
+
+        let(:params) do
+          {
+            book: {
+              title: "Changed Title",
+              author: Faker::Book.author,
+              genre: Faker::Book.genre,
+              isbn: Book.first.isbn,
+            },
+          }
+        end
+
+        before do |example|
+          submit_request(example.metadata)
+        end
+
+        it "returns the updated book" do
+          body = JSON.parse(response.body)
+
+          expect(response).to have_http_status(:not_found)
+          expect(body["errors"]).to include("not found")
+        end
+      end
+    end
+
+    delete "Librarian can delete book" do
+      tags "Librarian Books"
+      consumes "application/json"
+      produces "application/json"
+      security [Bearer: []]
+
+      parameter name: :id, in: :path, type: :integer, required: true
+
+      response(204, "book deleted") do
+        let(:id) { all_books.first.id }
+
+        before do |example|
+          submit_request(example.metadata)
+        end
+
+        it "returns no content" do
+          expect(response).to have_http_status(:no_content)
+          expect(Book.find_by(id: all_books.first.id)).to be_nil
+        end
+      end
+
+      response(404, "book not found") do
+        schema type: :object,
+               properties: {
+                 error: { type: :string },
+               }
+
+        let(:id) { 0 }
+
+        before do |example|
+          submit_request(example.metadata)
+        end
+
+        it "returns not found route" do
+          body = JSON.parse(response.body)
+
+          expect(response).to have_http_status(:not_found)
+          expect(body["errors"]).to include("not found")
         end
       end
     end
