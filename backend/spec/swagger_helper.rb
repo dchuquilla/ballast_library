@@ -8,7 +8,7 @@ RSpec.configure do |config|
   # NOTE: If you're using the rswag-api to serve API descriptions, you'll need
   # to ensure that it's configured to serve Swagger from the same folder
   # config.openapi_root = Rails.root.join("swagger").to_s
-  config.swagger_root = Rails.root.join("swagger").to_s
+  config.openapi_root = Rails.root.join("swagger").to_s
 
   # Define one or more Swagger documents and provide global metadata for each one
   # When you run the 'rswag:specs:swaggerize' rake task, the complete Swagger will
@@ -37,7 +37,7 @@ RSpec.configure do |config|
   #   },
   # }
 
-  config.swagger_docs = {
+  config.openapi_specs = {
     "v1/swagger.json" => {
       openapi: "3.0.1",
       info: {
@@ -73,5 +73,5 @@ RSpec.configure do |config|
   # the key, this may want to be changed to avoid putting yaml in json files.
   # Defaults to json. Accepts ':json' and ':yaml'.
   # config.openapi_format = :yaml
-  config.swagger_format = :json
+  config.openapi_format = :json
 end
