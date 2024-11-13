@@ -6,6 +6,13 @@ class Borrowing < ApplicationRecord
 
   before_create :set_borrowed_at, :set_due_date
 
+  scope :due_today, -> { where(due_date: Date.today) }
+  scope :overdue, -> { where("due_date < ?", Date.today) }
+  scope :user_with_overdure_books, -> { overdue.distinct.count(:user_id) }
+  scope :overdue_users, -> { overdue.distinct.pluck(:user_id) }
+
+  private
+
   def unique_borrowing_per_book_copy
     if Borrowing.joins(:book_copy).where(book_copy_id: book_copy.id, returned_at: nil, book_copy: { status: BOOK_STATUSES[:borrowed] }).exists?
       errors.add(:book_copy, "is already borrowed")

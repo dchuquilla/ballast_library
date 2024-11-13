@@ -8,6 +8,11 @@ class BookCopy < ApplicationRecord
   after_create :update_book_total_copies
   after_destroy :update_book_total_copies
 
+  scope :borrowed, -> { where(status: BOOK_STATUSES[:borrowed]) }
+  scope :available, -> { where(status: BOOK_STATUSES[:available]) }
+
+  private
+
   def generate_copy_code
     last_copy_number = BookCopy.where(book_id: book_id).count + 1
     self.copy_code = "#{book.isbn}-#{format("%03d", last_copy_number)}"
