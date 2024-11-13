@@ -5,6 +5,13 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
                        sessions: "users/sessions",
                      }
+  namespace :v1 do
+    namespace :librarian do
+      resources :books
+    end
 
-  resources :books
+    namespace :member do
+      resources :books, only: [:index, :show]
+    end
+  end
 end

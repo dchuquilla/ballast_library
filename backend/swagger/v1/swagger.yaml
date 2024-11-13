@@ -5,9 +5,9 @@
     "version": "v1"
   },
   "paths": {
-    "/books": {
+    "/v1/member/books": {
       "get": {
-        "summary": "List all books",
+        "summary": "Member List all books",
         "tags": [
           "Books"
         ],
@@ -61,13 +61,298 @@
             }
           }
         }
-      }
-    },
-    "/books/{id}": {
-      "get": {
-        "summary": "Show book",
+      },
+      "post": {
+        "summary": "Member can't Create book",
         "tags": [
           "Books"
+        ],
+        "security": [
+          {
+            "Bearer": [
+
+            ]
+          }
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "404": {
+            "description": "Cant't book created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "author": {
+                      "type": "string"
+                    },
+                    "genre": {
+                      "type": "string"
+                    },
+                    "isbn": {
+                      "type": "string"
+                    },
+                    "total_copies": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "book": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "type": "string"
+                      },
+                      "author": {
+                        "type": "string"
+                      },
+                      "genre": {
+                        "type": "string"
+                      },
+                      "isbn": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "title",
+                      "author",
+                      "genre",
+                      "isbn"
+                    ]
+                  }
+                },
+                "required": [
+                  "book"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/member/books/{id}": {
+      "get": {
+        "summary": "Member see a single book",
+        "tags": [
+          "Books"
+        ],
+        "security": [
+          {
+            "Bearer": [
+
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "book found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "author": {
+                      "type": "string"
+                    },
+                    "genre": {
+                      "type": "string"
+                    },
+                    "isbn": {
+                      "type": "string"
+                    },
+                    "total_copies": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/librarian/books": {
+      "get": {
+        "summary": "Librarian list all books",
+        "tags": [
+          "Librarian Books"
+        ],
+        "security": [
+          {
+            "Bearer": [
+
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "books listed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "author": {
+                        "type": "string"
+                      },
+                      "genre": {
+                        "type": "string"
+                      },
+                      "isbn": {
+                        "type": "string"
+                      },
+                      "total_copies": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "title",
+                      "author",
+                      "genre",
+                      "isbn",
+                      "total_copies"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Librarian can create book",
+        "tags": [
+          "Librarian Books"
+        ],
+        "security": [
+          {
+            "Bearer": [
+
+            ]
+          }
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "book created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "author": {
+                      "type": "string"
+                    },
+                    "genre": {
+                      "type": "string"
+                    },
+                    "isbn": {
+                      "type": "string"
+                    },
+                    "total_copies": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "book": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "type": "string"
+                      },
+                      "author": {
+                        "type": "string"
+                      },
+                      "genre": {
+                        "type": "string"
+                      },
+                      "isbn": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "title",
+                      "author",
+                      "genre",
+                      "isbn"
+                    ]
+                  }
+                },
+                "required": [
+                  "book"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/librarian/books/{id}": {
+      "get": {
+        "summary": "Librarian see a single book",
+        "tags": [
+          "Librarian Books"
         ],
         "security": [
           {

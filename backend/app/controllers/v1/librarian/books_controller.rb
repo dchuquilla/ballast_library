@@ -1,10 +1,13 @@
-class BooksController < ApplicationController
+# frozen_string_literal: true
+
+class V1::Librarian::BooksController < ApplicationController
   include AuthorizationHelper
 
   before_action :authenticate_user!
   before_action :set_book, only: [:show, :update, :destroy]
+
   before_action only: [:create, :update, :destroy] do
-    authorize(@book || Book)
+    authorize(@book || Book, "#{params[:action]}?")
   end
 
   def index
@@ -16,13 +19,14 @@ class BooksController < ApplicationController
     render json: @book, status: :ok
   end
 
-  def new
-  end
-
   def create
-  end
+    @book = Book.new(book_params)
 
-  def edit
+    if @book.save
+      render json: @book, status: :created
+    else
+      render json: { errors: @book.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def update
@@ -35,5 +39,9 @@ class BooksController < ApplicationController
 
   def set_book
     @book = Book.find(params[:id])
+  end
+
+  def book_params
+    params.require(:book).permit(:title, :author, :genre, :isbn)
   end
 end

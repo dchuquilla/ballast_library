@@ -5,15 +5,15 @@ require "swagger_helper"
 require "devise/jwt/test_helpers"
 require "faker"
 
-RSpec.describe "Books API", type: :request do
+RSpec.describe "Librarian Books API", type: :request do
   include Helpers::Authentication
 
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :librarian) }
   let(:authorization) { get_token_bearer(user) }
 
-  path "/v1/member/books" do
-    get "Member List all books" do
-      tags "Books"
+  path "/v1/librarian/books" do
+    get "Librarian list all books" do
+      tags "Librarian Books"
       consumes "application/json"
       produces "application/json"
       security [Bearer: []]
@@ -50,8 +50,8 @@ RSpec.describe "Books API", type: :request do
       end
     end
 
-    post "Member can't Create book" do
-      tags "Books"
+    post "Librarian can create book" do
+      tags "Librarian Books"
       consumes "application/json"
       produces "application/json"
       security [Bearer: []]
@@ -73,7 +73,7 @@ RSpec.describe "Books API", type: :request do
         required: %w[book],
       }
 
-      response "404", "Cant't book created" do
+      response "201", "book created" do
         schema type: :object,
                properties: {
                  id: { type: :integer },
@@ -102,16 +102,16 @@ RSpec.describe "Books API", type: :request do
         it "returns the created book" do
           body = JSON.parse(response.body)
 
-          expect(response).to have_http_status(:not_found)
-          expect(body["error"]).to eq("Not Found")
+          expect(response).to have_http_status(:created)
+          expect(Book.last.title).to eq(body["title"])
         end
       end
     end
   end
 
-  path "/v1/member/books/{id}" do
-    get "Member see a single book" do
-      tags "Books"
+  path "/v1/librarian/books/{id}" do
+    get "Librarian see a single book" do
+      tags "Librarian Books"
       consumes "application/json"
       produces "application/json"
       security [Bearer: []]
