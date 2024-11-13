@@ -43,6 +43,15 @@ Stopping the Containers
 docker-compose down
 ```
 
+## Running Tests
+
+### Backend
+
+To run the backend tests, use the following command:
+```sh
+docker-compose exec backend rspec
+```
+
 ## Additional Information
 
 - **Backend:** The backend is configured to use PostgreSQL. Ensure that the database configuration in `backend/config/database.yml` matches your setup.
