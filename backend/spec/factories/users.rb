@@ -6,10 +6,10 @@ FactoryBot.define do
     email { Faker::Internet.email }
     password { "password" }
     password_confirmation { "password" }
-    role { "member" }
+    role { APP_ROLES[:member] }
 
     trait :librarian do
-      role { "librarian" }
+      role { APP_ROLES[:librarian] }
     end
   end
 end
