@@ -9,8 +9,8 @@
 # Create users
 member = User.find_or_create_by(email: "member@example.com") do |user|
   user.name = "Member"
-  user.password = "password"
-  user.password_confirmation = "password"
+  user.password = "Mpassword"
+  user.password_confirmation = "Mpassword"
   user.role = APP_ROLES[:member]
 end
 member.save!
@@ -19,8 +19,8 @@ puts "Member created with email #{User.last.email}"
 
 librarian = User.find_or_create_by(email: "librarian@example.com") do |user|
   user.name = "Librarian"
-  user.password = "password"
-  user.password_confirmation = "password"
+  user.password = "Lpassword"
+  user.password_confirmation = "Lpassword"
   user.role = APP_ROLES[:librarian]
 end
 librarian.save!
