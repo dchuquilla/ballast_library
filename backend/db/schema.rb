@@ -31,6 +31,10 @@ ActiveRecord::Schema[7.0].define(version: 202411121511936) do
     t.integer "total_copies", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["author"], name: "index_books_on_author"
+    t.index ["genre"], name: "index_books_on_genre"
+    t.index ["isbn"], name: "index_books_on_isbn"
+    t.index ["title"], name: "index_books_on_title"
   end
 
   create_table "borrowings", force: :cascade do |t|
