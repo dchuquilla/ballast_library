@@ -94,8 +94,6 @@ RSpec.describe "Librarian book Copies API", type: :request do
         end
 
         it "creates a book copy" do
-          body = JSON.parse(response.body)
-
           expect(response).to have_http_status(:created)
           expect(BookCopy.where(book_id: all_books.last.id).size).to eq(3)
         end
@@ -230,8 +228,6 @@ RSpec.describe "Librarian book Copies API", type: :request do
         end
 
         it "returns an error" do
-          body = JSON.parse(response.body)
-
           expect(response).to have_http_status(:unprocessable_entity)
         end
       end
