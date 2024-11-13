@@ -34,6 +34,7 @@ docker-compose up --build -d
 ### 2. Access the Application
 
 - Backend: The Rails server will be running at `http://127.0.0.1:3000`
+- API Documentation: The Swagger documentation will be available at `http://127.0.0.1:3000/api-docs/index.html`
 - Frontend: The React development server will be running at `http://127.0.0.1:3001`
 
 Stopping the Containers
