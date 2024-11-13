@@ -15,6 +15,15 @@ Rails.application.routes.draw do
           resources :book_copies, except: [:new, :edit], param: :book_copy_id
         end
       end
+
+      resources :borrowings, only: [:index, :show, :update, :destroy] do
+        member do
+          patch :return
+        end
+        collection do
+          post :borrow
+        end
+      end
     end
 
     namespace :member do
@@ -24,6 +33,12 @@ Rails.application.routes.draw do
         end
         member do
           resources :book_copies, only: [:index, :show], param: :book_copy_id
+        end
+      end
+
+      resources :borrowings, only: [:index, :show] do
+        collection do
+          post :borrow
         end
       end
     end
