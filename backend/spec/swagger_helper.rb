@@ -45,6 +45,16 @@ RSpec.configure do |config|
         version: "v1",
       },
       paths: {},
+      servers: [
+        {
+          url: "http://{defaultHost}",
+          variables: {
+            defaultHost: {
+              default: "127.0.0.1:3000",
+            },
+          },
+        },
+      ],
       components: {
         securitySchemes: {
           Bearer: {
