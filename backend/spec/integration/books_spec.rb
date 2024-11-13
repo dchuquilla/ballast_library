@@ -76,7 +76,7 @@ RSpec.describe "Books API", type: :request do
   end
 
   path "/v1/member/books/{id}" do
-    get "Member see a single book" do
+    get "Member see a single book with its copies" do
       tags "Books"
       consumes "application/json"
       produces "application/json"
@@ -85,6 +85,7 @@ RSpec.describe "Books API", type: :request do
       parameter name: :id, in: :path, type: :integer, required: true
 
       let(:book) { create(:book) }
+      let(:book_copies) { create_list(:book_copy, 3, book: book) }
 
       response(200, "book found") do
         schema type: :object,
@@ -95,11 +96,26 @@ RSpec.describe "Books API", type: :request do
                  genre: { type: :string },
                  isbn: { type: :string },
                  total_copies: { type: :integer },
-               }
+                 book_copies: {
+                   type: :array,
+                   nulllable: true,
+                   items: {
+                     type: :object,
+                     properties: {
+                       id: { type: :integer },
+                       book_id: { type: :integer },
+                       status: { type: :string },
+                     },
+                     required: %w[id book_id status],
+                   },
+                 },
+               },
+               required: %w[id title author genre isbn total_copies book_copies]
 
         let(:id) { book.id }
 
         before do |example|
+          book_copies
           submit_request(example.metadata)
         end
 
@@ -108,6 +124,7 @@ RSpec.describe "Books API", type: :request do
 
           expect(response).to have_http_status(:ok)
           expect(book.title).to eq(body["title"])
+          expect(book_copies.count).to eq(body["book_copies"].size)
         end
       end
     end

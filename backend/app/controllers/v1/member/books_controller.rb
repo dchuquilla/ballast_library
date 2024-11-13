@@ -17,7 +17,7 @@ class V1::Member::BooksController < ApplicationController
   end
 
   def show
-    render json: @book, status: :ok
+    render json: @book, include: :book_copies, status: :ok
   end
 
   private
