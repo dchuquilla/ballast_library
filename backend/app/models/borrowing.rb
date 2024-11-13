@@ -13,22 +13,10 @@ class Borrowing < ApplicationRecord
   end
 
   def set_borrowed_at
-    self.borrowed_at = DateTime.now
+    self.borrowed_at = DateTime.now if self.borrowed_at.nil?
   end
 
   def set_due_date
-    self.due_date = calculate_due_date
-  end
-
-  private
-
-  # Calculate the due date for a week days only
-  def calculate_due_date
-    due_date = DateTime.now
-    14.times do
-      due_date += 1.day
-      due_date += 2.days if due_date.saturday?
-    end
-    due_date
+    self.due_date = DueDateCalculatorService.new(DateTime.now).call if self.due_date.nil?
   end
 end
