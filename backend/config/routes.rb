@@ -20,9 +20,6 @@ Rails.application.routes.draw do
         member do
           patch :return
         end
-        collection do
-          post :borrow
-        end
       end
     end
 
