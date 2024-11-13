@@ -28,16 +28,24 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string"
+                      },
+                      "password": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "email",
+                      "password"
+                    ]
                   }
                 },
-                "required": [
-                  "email",
-                  "password"
+                "redquired": [
+                  "user"
                 ]
               }
             }
@@ -59,6 +67,16 @@
       }
     }
   },
+  "servers": [
+    {
+      "url": "http://{defaultHost}",
+      "variables": {
+        "defaultHost": {
+          "default": "127.0.0.1:3000"
+        }
+      }
+    }
+  ],
   "components": {
     "securitySchemes": {
       "Bearer": {

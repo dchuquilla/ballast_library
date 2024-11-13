@@ -3,7 +3,8 @@ require "rails_helper"
 RSpec.describe User, type: :model do
   it "is valid with valid attributes" do
     user = FactoryBot.create(:user)
-    librarian = FactoryBot.build(:user, :librarian)
+    librarian = FactoryBot.create(:user, :librarian)
+
     expect(user).to be_valid
     expect(librarian).to be_valid
   end

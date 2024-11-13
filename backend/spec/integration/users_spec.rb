@@ -11,22 +11,28 @@ RSpec.describe "Users API", type: :request do
 
       let!(:existing_user) { create(:user, password: "password") }
 
-      parameter name: :user, in: :body, schema: {
+      parameter name: :params, in: :body, schema: {
         type: :object,
         properties: {
-          email: { type: :string },
-          password: { type: :string },
+          user: {
+            type: :object,
+            properties: {
+              email: { type: :string },
+              password: { type: :string },
+            },
+            required: ["email", "password"],
+          },
         },
-        required: ["email", "password"],
+        redquired: ["user"],
       }
 
       response "200", "user signed in" do
-        let(:user) { { user: { email: existing_user.email, password: "password" }, format: :json } }
+        let(:params) { { user: { email: existing_user.email, password: "password" }, format: :json } }
         run_test!
       end
 
       response "401", "invalid credentials" do
-        let(:user) { { user: { email: existing_user.email, password: "wrong_password" }, format: :json } }
+        let(:params) { { user: { email: existing_user.email, password: "wrong_password" }, format: :json } }
         run_test!
       end
     end
