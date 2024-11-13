@@ -11,6 +11,9 @@ Rails.application.routes.draw do
         collection do
           get :search
         end
+        member do
+          resources :book_copies, except: [:new, :edit], param: :book_copy_id
+        end
       end
     end
 
@@ -18,6 +21,9 @@ Rails.application.routes.draw do
       resources :books, only: [:index, :show] do
         collection do
           get :search
+        end
+        member do
+          resources :book_copies, only: [:index, :show], param: :book_copy_id
         end
       end
     end
