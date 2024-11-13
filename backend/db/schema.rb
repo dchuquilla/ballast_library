@@ -33,6 +33,18 @@ ActiveRecord::Schema[7.0].define(version: 202411121511936) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "borrowings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "book_copy_id", null: false
+    t.datetime "borrowed_at", null: false
+    t.datetime "due_date", null: false
+    t.datetime "returned_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_copy_id"], name: "index_borrowings_on_book_copy_id"
+    t.index ["user_id"], name: "index_borrowings_on_user_id"
+  end
+
   create_table "jwt_denylist", force: :cascade do |t|
     t.string "jti", null: false
     t.datetime "exp", null: false
@@ -58,4 +70,6 @@ ActiveRecord::Schema[7.0].define(version: 202411121511936) do
   end
 
   add_foreign_key "book_copies", "books"
+  add_foreign_key "borrowings", "book_copies"
+  add_foreign_key "borrowings", "users"
 end

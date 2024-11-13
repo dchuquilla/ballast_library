@@ -1,7 +1,6 @@
 class BookCopy < ApplicationRecord
   belongs_to :book
 
-  # validates :copy_code, presence: true, uniqueness: true
   validates :status, presence: true, inclusion: { in: BOOK_STATUSES.values }
 
   before_create :generate_copy_code
