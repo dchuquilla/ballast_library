@@ -40,3 +40,22 @@ puts "Librarian created with email #{User.last.email}"
     puts "  - Book copy created for book with code [#{BookCopy.last.copy_code}]"
   end
 end
+
+(1..5).each do |n|
+  Borrowing.create!(
+    user_id: member.id,
+    book_copy_id: BookCopy.all.sample.id,
+  )
+
+  puts "Borrowing created for user with email '#{User.find(Borrowing.last.user_id).email}'"
+end
+
+(1..5).each do |n|
+  Borrowing.create!(
+    user_id: member.id,
+    book_copy_id: BookCopy.all.sample.id,
+    due_date: Faker::Date.backward(days: 30), # Set due date in the past to simulate overdue
+  )
+
+  puts "Overdue borrowing created for user with email '#{User.find(Borrowing.last.user_id).email}'"
+end
