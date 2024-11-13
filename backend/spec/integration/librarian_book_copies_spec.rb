@@ -96,6 +96,7 @@ RSpec.describe "Librarian book Copies API", type: :request do
         it "creates a book copy" do
           expect(response).to have_http_status(:created)
           expect(BookCopy.where(book_id: all_books.last.id).size).to eq(3)
+          expect(Book.find(all_books.last.id).total_copies).to eql(3)
         end
       end
 
@@ -255,6 +256,7 @@ RSpec.describe "Librarian book Copies API", type: :request do
         it "deletes book copy" do
           expect(response).to have_http_status(:no_content)
           expect(BookCopy.find_by(id: last_book_copies.first.id)).to be_nil
+          expect(Book.find(last_book_copies.first.id).total_copies).to eq(0)
         end
       end
     end
