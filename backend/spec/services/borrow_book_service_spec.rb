@@ -15,6 +15,7 @@ RSpec.describe BorrowBookService do
         expect(Borrowing.last.user).to eq(user)
         expect(Borrowing.last.borrowed_at.to_date).to eq(Time.zone.now.to_date)
         expect(Borrowing.last.due_date.to_date).to eq(DueDateCalculatorService.new(Borrowing.last.borrowed_at).call.to_date)
+        expect(Borrowing.last.book_copy.status).to eq(BOOK_STATUSES[:borrowed])
       end
     end
 
@@ -28,6 +29,7 @@ RSpec.describe BorrowBookService do
         result = service.call
         expect(result[:success]).to be false
         expect(result[:errors]).to include("Error message")
+        expect(book_copy.status).to eq(BOOK_STATUSES[:available])
       end
     end
   end
