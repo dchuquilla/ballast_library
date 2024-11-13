@@ -2,8 +2,9 @@
 
 module AuthorizationHelper
   def authorize(record, query = nil)
-    query ||= "#{params}?"
-    policy = "#{record.first.class.name}Policy".constantize.new(current_user, record.first.class)
+    query ||= "#{params[:action]}?"
+    policy_class = record.is_a?(Class) ? record : record.class
+    policy = "#{policy_class}Policy".constantize.new(current_user, record)
 
     unless policy.public_send(query)
       render json: { error: "Access denied" }, status: :forbidden
