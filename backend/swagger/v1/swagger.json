@@ -216,7 +216,7 @@
     },
     "/v1/member/books/{id}": {
       "get": {
-        "summary": "Member see a single book",
+        "summary": "Member see a single book with its copies",
         "tags": [
           "Books"
         ],
@@ -262,8 +262,40 @@
                     },
                     "total_copies": {
                       "type": "integer"
+                    },
+                    "book_copies": {
+                      "type": "array",
+                      "nulllable": true,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "book_id": {
+                            "type": "integer"
+                          },
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "book_id",
+                          "status"
+                        ]
+                      }
                     }
-                  }
+                  },
+                  "required": [
+                    "id",
+                    "title",
+                    "author",
+                    "genre",
+                    "isbn",
+                    "total_copies",
+                    "book_copies"
+                  ]
                 }
               }
             }
@@ -410,6 +442,239 @@
                       "genre",
                       "isbn",
                       "total_copies"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/member/borrowings": {
+      "get": {
+        "summary": "Member List all borrowings",
+        "tags": [
+          "Borrowings"
+        ],
+        "security": [
+          {
+            "Bearer": [
+
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "borrowings listed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "book_copy_id": {
+                        "type": "integer"
+                      },
+                      "user_id": {
+                        "type": "integer"
+                      },
+                      "borrowed_at": {
+                        "type": "string"
+                      },
+                      "due_date": {
+                        "type": "string"
+                      },
+                      "returned_at": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "book_copy_id",
+                      "user_id",
+                      "borrowed_at",
+                      "due_date",
+                      "returned_at"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/member/borrowings/{id}": {
+      "get": {
+        "summary": "Member see its borrowing",
+        "tags": [
+          "Borrowings"
+        ],
+        "security": [
+          {
+            "Bearer": [
+
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "borrowing shown",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "book_copy_id": {
+                      "type": "integer"
+                    },
+                    "user_id": {
+                      "type": "integer"
+                    },
+                    "borrowed_at": {
+                      "type": "string"
+                    },
+                    "due_date": {
+                      "type": "string"
+                    },
+                    "returned_at": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "book_copy_id",
+                    "user_id",
+                    "borrowed_at",
+                    "due_date",
+                    "returned_at"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "borrowing not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/member/borrowings/borrow": {
+      "post": {
+        "summary": "Member borrow a book",
+        "tags": [
+          "Borrowings"
+        ],
+        "security": [
+          {
+            "Bearer": [
+
+            ]
+          }
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "Book borrowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "book_copy_id": {
+                      "type": "integer"
+                    },
+                    "user_id": {
+                      "type": "integer"
+                    },
+                    "borrowed_at": {
+                      "type": "string"
+                    },
+                    "due_date": {
+                      "type": "string"
+                    },
+                    "returned_at": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "book_copy_id",
+                    "user_id",
+                    "borrowed_at",
+                    "due_date",
+                    "returned_at"
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "A borrowed copy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "borrowing": {
+                    "type": "object",
+                    "properties": {
+                      "book_copy_id": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "book_copy_id"
                     ]
                   }
                 }
