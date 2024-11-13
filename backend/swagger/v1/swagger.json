@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "API V1",
+    "title": "Library API V1",
     "version": "v1"
   },
   "paths": {
@@ -1301,7 +1301,7 @@
   "components": {
     "securitySchemes": {
       "Bearer": {
-        "description": "...",
+        "description": "This project is a library management system with a backend built using Ruby on Rails and a frontend built using React.",
         "type": "apiKey",
         "name": "authorization",
         "in": "header"
