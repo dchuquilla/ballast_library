@@ -10,12 +10,14 @@ class V1::Member::BorrowingsController < ApplicationController
   end
 
   def show
+    render json: { error: "Not Found" }, status: :not_found and return unless @borrowing
+
     render json: @borrowing, status: :ok
   end
 
   def borrow
     service = BorrowBookService.new(current_user, borrowing_params)
-    if service.call
+    if service.call[:success]
       render json: service.borrowing, status: :created
     else
       render json: { errors: service.errors }, status: :unprocessable_entity
@@ -25,7 +27,7 @@ class V1::Member::BorrowingsController < ApplicationController
   private
 
   def set_borrowing
-    @borrowing = Borrowing.find(params[:id])
+    @borrowing = Borrowing.find_by(user_id: current_user.id, id: params[:id])
   end
 
   def borrowing_params

@@ -6,6 +6,8 @@ RSpec.describe BorrowBookService do
   let(:book_copy) { create(:book_copy) }
   let(:params) { { book_copy_id: book_copy.id } }
   let(:service) { described_class.new(user, params) }
+  let(:borrowed_params) { { book_copy_id: BookCopy.where(status: BOOK_STATUSES[:borrowed]).last.id } }
+  let(:borrowed_service) { described_class.new(user_other, borrowed_params) }
 
   describe "#call" do
     context "when borrowing is successful" do
@@ -35,12 +37,9 @@ RSpec.describe BorrowBookService do
     end
 
     context "when borrowing the same book copy again" do
-      before do
-        create(:borrowing, user: user_other, book_copy: book_copy)
-      end
-
       it "returns an error message" do
-        result = service.call
+        result = borrowed_service.call
+
         expect(result[:success]).to be false
         expect(result[:errors]).to include("Book copy is already borrowed")
       end

@@ -7,7 +7,7 @@ class Borrowing < ApplicationRecord
   before_create :set_borrowed_at, :set_due_date
 
   def unique_borrowing_per_book_copy
-    if Borrowing.where(book_copy: book_copy, returned_at: nil).exists?
+    if Borrowing.joins(:book_copy).where(book_copy_id: book_copy.id, returned_at: nil, book_copy: { status: BOOK_STATUSES[:borrowed] }).exists?
       errors.add(:book_copy, "is already borrowed")
     end
   end
