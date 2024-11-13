@@ -20,7 +20,7 @@ RSpec.describe "Librarian Books API", type: :request do
       produces "application/json"
       security [Bearer: []]
 
-      response "200", "books listed" do
+      response(200, "books listed") do
         schema type: :array,
                items: {
                  type: :object,
@@ -73,7 +73,7 @@ RSpec.describe "Librarian Books API", type: :request do
         required: %w[book],
       }
 
-      response "201", "book created" do
+      response(201, "book created") do
         schema type: :object,
                properties: {
                  id: { type: :integer },
@@ -341,7 +341,7 @@ RSpec.describe "Librarian Books API", type: :request do
 
       parameter name: :query, in: :query, type: :string, required: true
 
-      response "200", "books listed" do
+      response(200, "books listed") do
         schema type: :array,
                items: {
                  type: :object,

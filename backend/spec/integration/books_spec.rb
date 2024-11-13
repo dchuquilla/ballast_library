@@ -19,7 +19,7 @@ RSpec.describe "Books API", type: :request do
       produces "application/json"
       security [Bearer: []]
 
-      response "200", "books listed" do
+      response(200, "books listed") do
         schema type: :array,
                items: {
                  type: :object,
@@ -55,7 +55,7 @@ RSpec.describe "Books API", type: :request do
       produces "application/json"
       security [Bearer: []]
 
-      response "404", "Cant't book created" do
+      response(404, "Cant't book created") do
         schema type: :object,
                properties: {
                  error: { type: :string },
@@ -86,7 +86,7 @@ RSpec.describe "Books API", type: :request do
 
       let(:book) { create(:book) }
 
-      response "200", "book found" do
+      response(200, "book found") do
         schema type: :object,
                properties: {
                  id: { type: :integer },
@@ -180,7 +180,7 @@ RSpec.describe "Books API", type: :request do
 
       parameter name: :query, in: :query, type: :string, required: true
 
-      response "200", "books listed" do
+      response(200, "books listed") do
         schema type: :array,
                items: {
                  type: :object,

@@ -22,7 +22,7 @@ RSpec.describe "Book Copies API", type: :request do
 
       parameter name: :id, in: :path, type: :string, required: true, description: "Book ID"
 
-      response "200", "book copies listed" do
+      response(200, "book copies listed") do
         schema type: :array,
                items: {
                  type: :object,
@@ -31,8 +31,6 @@ RSpec.describe "Book Copies API", type: :request do
                    book_id: { type: :integer },
                    copy_code: { type: :string },
                    status: { type: :string },
-                   borrowed_at: { type: :string },
-                   returned_at: { type: :string },
                  },
                  required: %w[id book_id status],
                }
@@ -67,15 +65,13 @@ RSpec.describe "Book Copies API", type: :request do
       parameter name: :id, in: :path, type: :string, required: true, description: "Book ID"
       parameter name: :book_copy_id, in: :path, type: :string, required: true, description: "Book Copy ID"
 
-      response "200", "book copy listed" do
+      response(200, "book copy listed") do
         schema type: :object,
                properties: {
                  id: { type: :integer },
                  book_id: { type: :integer },
                  copy_code: { type: :string },
                  status: { type: :string },
-                 borrowed_at: { type: :string },
-                 returned_at: { type: :string },
                }
 
         let(:id) { all_books.last.id }

@@ -26,12 +26,12 @@ RSpec.describe "Users API", type: :request do
         redquired: ["user"],
       }
 
-      response "200", "user signed in" do
+      response(200, "user signed in") do
         let(:params) { { user: { email: existing_user.email, password: "password" }, format: :json } }
         run_test!
       end
 
-      response "401", "invalid credentials" do
+      response(401, "invalid credentials") do
         let(:params) { { user: { email: existing_user.email, password: "wrong_password" }, format: :json } }
         run_test!
       end
@@ -44,7 +44,7 @@ RSpec.describe "Users API", type: :request do
       consumes "application/json"
       produces "application/json"
 
-      response "200", "user signed out" do
+      response(200, "user signed out") do
         run_test!
       end
     end
