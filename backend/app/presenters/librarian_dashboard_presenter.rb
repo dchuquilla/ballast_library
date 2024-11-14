@@ -15,7 +15,9 @@ class LibrarianDashboardPresenter
       total_borrowed_books: @total_borrowed_books,
       books_due_today: @books_due_today,
       total_overdues: @total_overdues,
-      members_with_overdue_books: @members_with_overdue_books.to_json,
+      members_with_overdue_books: @members_with_overdue_books.map do |user|
+        { name: user.name, email: user.email }
+      end,
     }
   end
 end

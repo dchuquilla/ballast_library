@@ -21,6 +21,8 @@ Rails.application.routes.draw do
           patch :return
         end
       end
+
+      get "dashboard", to: "dashboard#index"
     end
 
     namespace :member do
@@ -38,6 +40,8 @@ Rails.application.routes.draw do
           post :borrow
         end
       end
+
+      get "dashboard", to: "dashboard#index"
     end
   end
 end
