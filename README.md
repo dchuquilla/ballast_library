@@ -37,7 +37,7 @@ docker-compose up --build -d
 - API Documentation: The Swagger documentation will be available at `http://127.0.0.1:3000/api-docs/index.html`
 - Frontend: The React development server will be running at `http://127.0.0.1:3001`
 
-Stopping the Containers
+### Stopping the Containers
 
 ```sh
 docker-compose down
@@ -51,6 +51,15 @@ To run the backend tests, use the following command:
 ```sh
 docker-compose exec backend rspec
 ```
+
+## Demo Users
+
+- **Member**:
+  - Email: member@example.com
+  - Password: password
+- **Librarian**:
+  - Email: librarian@example.com
+  - Password: password
 
 ## Additional Information
 
