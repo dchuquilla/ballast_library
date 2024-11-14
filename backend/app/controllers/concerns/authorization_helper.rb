@@ -10,4 +10,13 @@ module AuthorizationHelper
       render json: { error: "Access denied" }, status: :forbidden
     end
   end
+
+  def custom_authorize(record, query = nil)
+    query ||= "#{params[:action]}?"
+    policy = "#{record}Policy".constantize.new(current_user, record)
+
+    unless policy.public_send(query)
+      render json: { error: "Access denied" }, status: :forbidden
+    end
+  end
 end
