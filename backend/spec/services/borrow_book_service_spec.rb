@@ -4,10 +4,10 @@ RSpec.describe BorrowBookService do
   let(:user) { create(:user) }
   let(:user_other) { create(:user) }
   let(:book_copy) { create(:book_copy) }
+  let(:borrowed_copy) { create(:book_copy, status: BOOK_STATUSES[:borrowed]) }
   let(:params) { { book_copy_id: book_copy.id } }
   let(:service) { described_class.new(user, params) }
-  let(:borrowed_params) { { book_copy_id: BookCopy.where(status: BOOK_STATUSES[:borrowed]).last.id } }
-  let(:borrowed_service) { described_class.new(user_other, borrowed_params) }
+  let(:borrowed_service) { described_class.new(user_other, { book_copy_id: borrowed_copy.id }) }
 
   describe "#call" do
     context "when borrowing is successful" do
@@ -37,6 +37,10 @@ RSpec.describe BorrowBookService do
     end
 
     context "when borrowing the same book copy again" do
+      before do
+        borrowed_copy
+      end
+
       it "returns an error message" do
         result = borrowed_service.call
 

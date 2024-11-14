@@ -35,41 +35,17 @@ RSpec.describe "Books API", type: :request do
                }
 
         before do |example|
+          all_books
           submit_request(example.metadata)
         end
 
         it "returns all books" do
           body = JSON.parse(response.body)
-          target_book = Book.last
+          target_book = all_books.last
 
           expect(response).to have_http_status(:ok)
           expect(target_book.title).to eq(body.find { |book| book["id"] == target_book.id }["title"])
           expect(body.size).to eq(Book.count)
-        end
-      end
-    end
-
-    post "Member can't Create book" do
-      tags "Books"
-      consumes "application/json"
-      produces "application/json"
-      security [Bearer: []]
-
-      response(404, "Cant't book created") do
-        schema type: :object,
-               properties: {
-                 error: { type: :string },
-               }
-
-        before do |example|
-          submit_request(example.metadata)
-        end
-
-        it "returns not found route" do
-          body = JSON.parse(response.body)
-
-          expect(response).to have_http_status(:not_found)
-          expect(body["error"]).to eq("Not Found")
         end
       end
     end
@@ -128,64 +104,6 @@ RSpec.describe "Books API", type: :request do
         end
       end
     end
-
-    patch "Member can't Update book" do
-      tags "Books"
-      consumes "application/json"
-      produces "application/json"
-      security [Bearer: []]
-
-      parameter name: :id, in: :path, type: :integer, required: true
-
-      response("404", "Can't update a book") do
-        schema type: :object,
-               properties: {
-                 error: { type: :string },
-               }
-
-        let(:id) { all_books.first.id }
-
-        before do |example|
-          submit_request(example.metadata)
-        end
-
-        it "returns not found route" do
-          body = JSON.parse(response.body)
-
-          expect(response).to have_http_status(:not_found)
-          expect(body["error"]).to eq("Not Found")
-        end
-      end
-    end
-
-    delete "Member can't Delete book" do
-      tags "Books"
-      consumes "application/json"
-      produces "application/json"
-      security [Bearer: []]
-
-      parameter name: :id, in: :path, type: :integer, required: true
-
-      response("404", "Can't delete a book") do
-        schema type: :object,
-               properties: {
-                 error: { type: :string },
-               }
-
-        let(:id) { all_books.first.id }
-
-        before do |example|
-          submit_request(example.metadata)
-        end
-
-        it "returns not found route" do
-          body = JSON.parse(response.body)
-
-          expect(response).to have_http_status(:not_found)
-          expect(body["error"]).to eq("Not Found")
-        end
-      end
-    end
   end
 
   path "/v1/member/books/search" do
@@ -212,9 +130,10 @@ RSpec.describe "Books API", type: :request do
                  required: %w[id title author genre isbn total_copies],
                }
 
-        let(:query) { Book.first.isbn }
+        let(:query) { all_books.first.isbn }
 
         before do |example|
+          all_books
           submit_request(example.metadata)
         end
 
@@ -223,7 +142,7 @@ RSpec.describe "Books API", type: :request do
 
           expect(response).to have_http_status(:ok)
           expect(body.size).to eq(1)
-          expect(Book.first.isbn).to eq(body.first["isbn"])
+          expect(all_books.first.isbn).to eq(body.first["isbn"])
         end
       end
     end

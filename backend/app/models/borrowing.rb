@@ -16,7 +16,7 @@ class Borrowing < ApplicationRecord
   def unique_borrowing_per_book_copy
     return true unless book_copy.present?
 
-    if Borrowing.joins(:book_copy).where(book_copy_id: book_copy.id, returned_at: nil, book_copy: { status: BOOK_STATUSES[:borrowed] }).exists?
+    if BookCopy.where(id: book_copy.id, status: BOOK_STATUSES[:borrowed]).exists?
       errors.add(:book_copy, "is already borrowed")
     end
   end

@@ -9,9 +9,9 @@ RSpec.describe "Librarian book Copies API", type: :request do
 
   let(:user) { create(:user, :librarian) }
   let(:authorization) { get_token_bearer(user) }
-  let(:all_books) { FactoryBot.create_list(:book, 2) }
-  let(:first_book_copies) { FactoryBot.create_list(:book_copy, 3, book: all_books.first) }
-  let(:last_book_copies) { FactoryBot.create_list(:book_copy, 2, book: all_books.last) }
+  let(:all_books) { create_list(:book, 2) }
+  let(:first_book_copies) { create_list(:book_copy, 3, book: all_books.first) }
+  let(:last_book_copies) { create_list(:book_copy, 2, book: all_books.last) }
 
   path "/v1/librarian/books/{id}/book_copies" do
     get "Librarian List all book copies" do
@@ -248,6 +248,7 @@ RSpec.describe "Librarian book Copies API", type: :request do
         let(:book_copy_id) { last_book_copies.first.id }
 
         before do |example|
+          all_books
           first_book_copies
           last_book_copies
           submit_request(example.metadata)
@@ -256,7 +257,8 @@ RSpec.describe "Librarian book Copies API", type: :request do
         it "deletes book copy" do
           expect(response).to have_http_status(:no_content)
           expect(BookCopy.find_by(id: last_book_copies.first.id)).to be_nil
-          expect(Book.find(last_book_copies.first.id).total_copies).to eq(0)
+          expect(Book.find(all_books.first.id).total_copies).to eq(3)
+          expect(Book.find(all_books.last.id).total_copies).to eq(1)
         end
       end
     end

@@ -36,12 +36,13 @@ RSpec.describe "Librarian Books API", type: :request do
                }
 
         before do |example|
+          all_books
           submit_request(example.metadata)
         end
 
         it "returns all books" do
           body = JSON.parse(response.body)
-          target_book = Book.last
+          target_book = all_books.last
 
           expect(response).to have_http_status(:ok)
           expect(target_book.title).to eq(body.find { |book| book["id"] == target_book.id }["title"])
@@ -240,12 +241,13 @@ RSpec.describe "Librarian Books API", type: :request do
               title: "Changed Title",
               author: Faker::Book.author,
               genre: Faker::Book.genre,
-              isbn: Book.first.isbn,
+              isbn: all_books.last.isbn,
             },
           }
         end
 
         before do |example|
+          all_books
           submit_request(example.metadata)
         end
 
@@ -271,12 +273,13 @@ RSpec.describe "Librarian Books API", type: :request do
               title: "Changed Title",
               author: Faker::Book.author,
               genre: Faker::Book.genre,
-              isbn: Book.first.isbn,
+              isbn: all_books.first.isbn,
             },
           }
         end
 
         before do |example|
+          all_books
           submit_request(example.metadata)
         end
 
@@ -356,9 +359,10 @@ RSpec.describe "Librarian Books API", type: :request do
                  required: %w[id title author genre isbn total_copies],
                }
 
-        let(:query) { Book.first.isbn }
+        let(:query) { all_books.first.isbn }
 
         before do |example|
+          all_books
           submit_request(example.metadata)
         end
 
