@@ -182,36 +182,6 @@
             }
           }
         }
-      },
-      "post": {
-        "summary": "Member can't Create book",
-        "tags": [
-          "Books"
-        ],
-        "security": [
-          {
-            "Bearer": [
-
-            ]
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Cant't book created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/v1/member/books/{id}": {
@@ -296,86 +266,6 @@
                     "total_copies",
                     "book_copies"
                   ]
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "summary": "Member can't Update book",
-        "tags": [
-          "Books"
-        ],
-        "security": [
-          {
-            "Bearer": [
-
-            ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Can't update a book",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "summary": "Member can't Delete book",
-        "tags": [
-          "Books"
-        ],
-        "security": [
-          {
-            "Bearer": [
-
-            ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Can't delete a book",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  }
                 }
               }
             }
@@ -1484,6 +1374,73 @@
                       "total_copies"
                     ]
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/librarian/dashboard": {
+      "get": {
+        "summary": "Retrieves the librarian dashboard",
+        "tags": [
+          "Librarian Dashboard"
+        ],
+        "security": [
+          {
+            "Bearer": [
+
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "dashboard retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total_books": {
+                      "type": "integer"
+                    },
+                    "total_borrowed_books": {
+                      "type": "integer"
+                    },
+                    "books_due_today": {
+                      "type": "integer"
+                    },
+                    "total_overdues": {
+                      "type": "integer"
+                    },
+                    "members_with_overdue_books": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "email"
+                        ]
+                      },
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "total_books",
+                    "total_borrowed_books",
+                    "books_due_today",
+                    "total_overdues",
+                    "members_with_overdue_books"
+                  ]
                 }
               }
             }
