@@ -2,6 +2,14 @@
 
 This project is a library management system with a backend built using Ruby on Rails and a frontend built using React.
 
+In this particular case Book copies are borrowed by members and managed by librarians. Members can borrow and return book copies, while librarians can manage books, and book copies.
+
+Endpoints are documented using Swagger and are grouped by Member and Librarian roles.
+
+Authentication is implemented with JWT and devise for user management.
+
+Authorization is implemented with Policy Object pattern.
+
 ## Technologies Used
 
 - **Backend**: Ruby on Rails 3.1.2
