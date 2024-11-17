@@ -57,7 +57,7 @@ docker-compose down
 
 To run the backend tests, use the following command:
 ```sh
-docker-compose exec backend rspec
+docker-compose exec backend bash -c "RAILS_ENV=test rspec"
 ```
 
 ## Demo Users
