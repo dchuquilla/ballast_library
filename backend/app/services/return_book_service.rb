@@ -12,7 +12,6 @@ class ReturnBookService
       { success: true, borrowing: @borrowing }
     else
       @errors = @borrowing.errors.full_messages
-      @borrowing.book_copy.update(status: BOOK_STATUSES[:borrowed])
       { success: false, errors: @errors }
     end
   end
