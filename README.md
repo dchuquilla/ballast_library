@@ -64,10 +64,10 @@ docker-compose exec backend bash -c "RAILS_ENV=test rspec"
 
 - **Member**:
   - Email: member@example.com
-  - Password: password
+  - Password: Mpassword
 - **Librarian**:
   - Email: librarian@example.com
-  - Password: password
+  - Password: Lpassword
 
 ## Additional Information
 
