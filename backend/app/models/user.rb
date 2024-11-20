@@ -18,4 +18,12 @@ class User < ApplicationRecord
   def member?
     role == APP_ROLES[:member]
   end
+
+  def inspect(arg = nil)
+    if arg
+      super
+    else
+      "#<User id: #{id}, name: #{name}, email: #{email}, role: #{role}>"
+    end
+  end
 end
