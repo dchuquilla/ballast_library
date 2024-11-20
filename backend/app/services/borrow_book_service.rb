@@ -18,9 +18,6 @@ class BorrowBookService
 
       { success: true, message: "Book borrowed successfully", borrowing: @borrowing }
     else
-      book_copy = BookCopy.find(params[:book_copy_id])
-      book_copy.update(status: BOOK_STATUSES[:available])
-
       @errors = @borrowing.errors.full_messages
       { success: false, errors: @errors }
     end
